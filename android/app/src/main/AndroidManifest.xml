@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
+<<<<<<< HEAD
         android:label="mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja"
+=======
+        android:label="pajakin_aja"
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

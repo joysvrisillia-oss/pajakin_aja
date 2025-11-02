@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 import 'package:flutter/material.dart';
 import 'Kalkulator_Pajak.dart';
 import 'Riwayat_Perhitungan.dart';
@@ -23,10 +27,24 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
+<<<<<<< HEAD
 
             const SizedBox(height: 20),
             Image.asset(
               'assets/logo.png',
+=======
+            const Text(
+              'Pajakin Aja!',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Image.asset(
+              'assets/images/logo.png',
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
               height: 100,
             ),
             const SizedBox(height: 20),
@@ -36,7 +54,11 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
+<<<<<<< HEAD
               'Hitung pajak pribadi, bisnis, dan lainnya dengan cepat\n& akurat.',
+=======
+              'Hitung pajak pribadi, bisnis, dan lainnya dengan cepat\n& akurat',
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white70),
             ),

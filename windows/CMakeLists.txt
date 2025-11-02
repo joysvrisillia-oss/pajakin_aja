@@ -1,10 +1,18 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
+<<<<<<< HEAD
 project(mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja")
+=======
+project(pajakin_aja LANGUAGES CXX)
+
+# The name of the executable created for the application. Change this to change
+# the on-disk name of your application.
+set(BINARY_NAME "pajakin_aja")
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

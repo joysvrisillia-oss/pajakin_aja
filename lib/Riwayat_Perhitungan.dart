@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +15,7 @@ class RiwayatPerhitunganPage extends StatefulWidget {
 
 class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
   List<String> _riwayat = [];
+<<<<<<< HEAD
   final formatRupiah = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
   final Map<String, IconData> _pajakIcons = {
@@ -29,6 +34,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
     }
     return Colors.blue;
   }
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 
   @override
   void initState() {
@@ -38,19 +45,31 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
 
   Future<void> _loadRiwayat() async {
     final prefs = await SharedPreferences.getInstance();
+<<<<<<< HEAD
     List<String> riwayat = prefs.getStringList('riwayat') ?? [];
     setState(() {
       _riwayat = riwayat.reversed.toList();
+=======
+    setState(() {
+      _riwayat = prefs.getStringList('riwayat') ?? [];
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
     });
   }
 
   Future<void> _hapusSatuRiwayat(int index) async {
     final prefs = await SharedPreferences.getInstance();
     List<String> riwayat = prefs.getStringList('riwayat') ?? [];
+<<<<<<< HEAD
     riwayat.removeAt(_riwayat.length - 1 - index);
     await prefs.setStringList('riwayat', riwayat);
     setState(() {
       _riwayat = riwayat.reversed.toList();
+=======
+    riwayat.removeAt(index);
+    await prefs.setStringList('riwayat', riwayat);
+    setState(() {
+      _riwayat = riwayat;
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
     });
   }
 
@@ -62,6 +81,7 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
     });
   }
 
+<<<<<<< HEAD
   void _tampilkanDetailRiwayat(String data) {
     final parts = data.split('|');
     String jenis = "";
@@ -183,6 +203,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
     return formatRupiah.format(ppn);
   }
 
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,7 +221,12 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                   context: context,
                   builder: (ctx) => AlertDialog(
                     title: const Text("Hapus Semua Riwayat?"),
+<<<<<<< HEAD
                     content: const Text("Semua data riwayat akan dihapus permanen."),
+=======
+                    content:
+                    const Text("Semua data riwayat akan dihapus permanen."),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx, false),
@@ -233,6 +260,10 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
           final data = _riwayat[index];
           final waktu = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
 
+<<<<<<< HEAD
+=======
+          // Pisahkan informasi
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           final parts = data.split('|');
           String jenis = "";
           String nilai = "";
@@ -249,8 +280,11 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
             }
           }
 
+<<<<<<< HEAD
           Color warnaJenis = _getColor(jenis);
 
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -258,13 +292,17 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
             elevation: 3,
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: ListTile(
+<<<<<<< HEAD
               onTap: () => _tampilkanDetailRiwayat(data),
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
               leading: Container(
                 decoration: BoxDecoration(
                   color: Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: const EdgeInsets.all(8),
+<<<<<<< HEAD
                 child: Icon(_pajakIcons[jenis] ?? Icons.receipt_long, color: warnaJenis),
               ),
               title: Column(
@@ -287,14 +325,31 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                     ),
                   ),
                 ],
+=======
+                child: const Icon(Icons.receipt_long, color: Colors.blue),
+              ),
+              title: Text(
+                "$jenis • $pajak",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+<<<<<<< HEAD
                     Text("Input: $nilai", style: const TextStyle(color: Colors.black54)),
                     Text("Waktu: $waktu", style: const TextStyle(color: Colors.black54)),
+=======
+                    Text("Input: $nilai",
+                        style: const TextStyle(color: Colors.black54)),
+                    Text("Waktu: $waktu",
+                        style: const TextStyle(color: Colors.black54)),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                   ],
                 ),
               ),
@@ -325,12 +380,16 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                         ],
                       ),
                     );
+<<<<<<< HEAD
                   } else if (value == 'detail') {
                     _tampilkanDetailRiwayat(data);
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                   }
                 },
                 itemBuilder: (context) => [
                   const PopupMenuItem(
+<<<<<<< HEAD
                     value: 'detail',
                     child: Row(
                       children: [
@@ -341,6 +400,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                     ),
                   ),
                   const PopupMenuItem(
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                     value: 'hapus',
                     child: Row(
                       children: [

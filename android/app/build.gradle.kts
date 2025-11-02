@@ -6,7 +6,11 @@ plugins {
 }
 
 android {
+<<<<<<< HEAD
     namespace = "com.example.mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja"
+=======
+    namespace = "com.example.pajakin_aja"
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,7 +25,11 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+<<<<<<< HEAD
         applicationId = "com.example.mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja"
+=======
+        applicationId = "com.example.pajakin_aja"
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -18,12 +22,15 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
   final formatRupiah =
   NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
+<<<<<<< HEAD
   final Map<String, IconData> _pajakIcons = {
     'PPh Pribadi': Icons.person,
     'Pajak Bisnis (UMKM)': Icons.business_center,
     'Pajak Lainnya (PBB & PPN)': Icons.receipt_long,
   };
 
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
   void _hitungPajak() async {
     double nilai = double.tryParse(_nilaiController.text) ?? 0.0;
 
@@ -36,6 +43,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
 
     double pajak = 0.0;
     String rincian = "";
+<<<<<<< HEAD
     String rincianLapisan = "";
 
     if (_jenisPajak == 'PPh Pribadi') {
@@ -60,10 +68,26 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
       double tarif = 0.005;
       pajak = nilai * tarif;
       rincian = "Rincian Perhitungan:\n"
+=======
+
+    if (_jenisPajak == 'PPh Pribadi') {
+      pajak = _hitungPPhPribadi(nilai);
+      rincian =
+      "Rincian Perhitungan:\n"
+          "Dasar Nilai : ${formatRupiah.format(nilai)}\n"
+          "PPh Pribadi (progresif UU HPP 2025)\n"
+          "Total = ${formatRupiah.format(pajak)}";
+    } else if (_jenisPajak == 'Pajak Bisnis (UMKM)') {
+      double tarif = 0.005;
+      pajak = nilai * tarif;
+      rincian =
+      "Rincian Perhitungan:\n"
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           "Dasar Nilai : ${formatRupiah.format(nilai)}\n"
           "Pajak UMKM (0.5%) = ${formatRupiah.format(pajak)}\n"
           "Total = ${formatRupiah.format(pajak)}";
     } else if (_jenisPajak == 'Pajak Lainnya (PBB & PPN)') {
+<<<<<<< HEAD
       double pbb = nilai * 0.001;
       double ppn = nilai * 0.11;
       pajak = pbb + ppn;
@@ -72,6 +96,17 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
           "PBB (0.1%) = ${formatRupiah.format(pbb)}\n"
           "PPN (11%) = ${formatRupiah.format(ppn)}\n"
           "PBB (0.1%) + PPN (11%) = ${formatRupiah.format(pajak)}\n"
+=======
+      double pbb = nilai * 0.001; // 0.1%
+      double ppn = nilai * 0.11;  // 11%
+      pajak = pbb + ppn;
+      rincian =
+      "PBB (0.1%) + PPN (11%) = ${formatRupiah.format(pajak)}\n\n"
+          "Rincian Perhitungan :\n"
+          "Dasar Nilai : ${formatRupiah.format(nilai)}\n"
+          "PBB (0.1%) = ${formatRupiah.format(pbb)}\n"
+          "PPN (11%) = ${formatRupiah.format(ppn)}\n"
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           "Total = ${formatRupiah.format(pajak)}";
     }
 
@@ -80,6 +115,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
       _hasilRincian = rincian;
     });
 
+<<<<<<< HEAD
     final prefs = await SharedPreferences.getInstance();
     List<String> riwayat = prefs.getStringList('riwayat') ?? [];
 
@@ -89,6 +125,16 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
 
     await prefs.setStringList('riwayat', riwayat);
 
+=======
+    // Simpan ke riwayat
+    final prefs = await SharedPreferences.getInstance();
+    List<String> riwayat = prefs.getStringList('riwayat') ?? [];
+    riwayat.add(
+        '$_jenisPajak - Nilai: ${formatRupiah.format(nilai)} | Pajak: ${formatRupiah.format(pajak)}');
+    await prefs.setStringList('riwayat', riwayat);
+
+    // Notifikasi kecil
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Hasil pajak berhasil disimpan ke riwayat.'),
@@ -97,6 +143,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
     );
   }
 
+<<<<<<< HEAD
   Map<String, dynamic> _hitungPPhPribadiDetail(double penghasilan) {
     List<int> batas = [60000000, 250000000, 500000000, 5000000000];
     List<double> tarif = [0.05, 0.15, 0.25, 0.30, 0.35];
@@ -177,6 +224,23 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
     return RichText(
       text: TextSpan(style: const TextStyle(height: 1.5), children: spans),
     );
+=======
+  double _hitungPPhPribadi(double penghasilan) {
+    // Tarif progresif sesuai UU HPP 2025
+    List<int> batas = [60000000, 250000000, 500000000, 5000000000];
+    List<double> tarif = [0.05, 0.15, 0.25, 0.30, 0.35];
+
+    double sisa = penghasilan;
+    double pajak = 0.0;
+
+    for (int i = 0; i < tarif.length && sisa > 0; i++) {
+      double bagian = (i < batas.length) ? batas[i].toDouble() : sisa;
+      double kena = sisa >= bagian ? bagian : sisa;
+      pajak += kena * tarif[i];
+      sisa -= kena;
+    }
+    return pajak;
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
   }
 
   @override
@@ -194,6 +258,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DropdownButtonFormField<String>(
+<<<<<<< HEAD
                 value: _jenisPajak,
                 items: [
                   DropdownMenuItem(
@@ -229,18 +294,29 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
                       ],
                     ),
                   ),
+=======
+                initialValue: _jenisPajak,
+                items: const [
+                  DropdownMenuItem(value: 'PPh Pribadi', child: Text('PPh Pribadi')),
+                  DropdownMenuItem(value: 'Pajak Bisnis (UMKM)', child: Text('Pajak Bisnis (UMKM)')),
+                  DropdownMenuItem(value: 'Pajak Lainnya (PBB & PPN)', child: Text('Pajak Lainnya (PBB & PPN)')),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                 ],
                 onChanged: (val) => setState(() => _jenisPajak = val!),
                 decoration: const InputDecoration(
                   labelText: "Pilih Jenis Pajak",
                   border: OutlineInputBorder(),
+<<<<<<< HEAD
                   prefixIcon: Icon(Icons.calculate),
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: _nilaiController,
                 keyboardType: TextInputType.number,
+<<<<<<< HEAD
                 decoration: InputDecoration(
                   labelText:
                   "Masukkan Nilai (Penghasilan / Omzet / Nilai Objek)",
@@ -257,19 +333,32 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
                       ),
                     ),
                   ),
+=======
+                decoration: const InputDecoration(
+                  labelText: "Masukkan Nilai (Penghasilan / Omzet / Nilai Objek)",
+                  border: OutlineInputBorder(),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                 ),
               ),
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton.icon(
                   onPressed: _hitungPajak,
+<<<<<<< HEAD
                   icon: Icon(_pajakIcons[_jenisPajak]),
+=======
+                  icon: const Icon(Icons.calculate),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                   label: const Text("Hitung & Simpan"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade700,
                     foregroundColor: Colors.white,
+<<<<<<< HEAD
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
+=======
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                   ),
                 ),
               ),
@@ -281,6 +370,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
                   decoration: BoxDecoration(
                     color: Colors.blue.shade50,
                     borderRadius: BorderRadius.circular(12),
+<<<<<<< HEAD
                     border: Border.all(color: Colors.blue.shade200),
                   ),
                   child: Column(
@@ -304,6 +394,12 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
                       const SizedBox(height: 12),
                       _formatHasilText(_hasilRincian),
                     ],
+=======
+                  ),
+                  child: Text(
+                    _hasilRincian,
+                    style: const TextStyle(fontSize: 16, height: 1.5),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
                   ),
                 ),
             ],
@@ -312,4 +408,8 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701

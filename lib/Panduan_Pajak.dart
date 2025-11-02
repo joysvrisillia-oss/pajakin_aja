@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 import 'package:flutter/material.dart';
 
 class PanduanPajakPage extends StatelessWidget {
@@ -7,22 +11,30 @@ class PanduanPajakPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
         title: const Align(
           alignment: Alignment.centerLeft,
           child: Text('Panduan & Tips Pajak'),
         ),
         backgroundColor: Colors.blue.shade800,
+=======
+        title: const Text('Panduan & Tips Pajak'),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           const Text(
             'PANDUAN & TIPS PAJAK',
+<<<<<<< HEAD
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
+=======
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           ),
           const SizedBox(height: 10),
           const Text(
@@ -31,6 +43,10 @@ class PanduanPajakPage extends StatelessWidget {
           ),
           const SizedBox(height: 10),
 
+<<<<<<< HEAD
+=======
+          // Nomor 1
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           RichText(
             textAlign: TextAlign.justify,
             text: const TextSpan(
@@ -48,6 +64,10 @@ class PanduanPajakPage extends StatelessWidget {
             ),
           ),
 
+<<<<<<< HEAD
+=======
+          // Nomor 2
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           RichText(
             textAlign: TextAlign.justify,
             text: const TextSpan(
@@ -65,6 +85,10 @@ class PanduanPajakPage extends StatelessWidget {
             ),
           ),
 
+<<<<<<< HEAD
+=======
+          // Nomor 3
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           RichText(
             textAlign: TextAlign.justify,
             text: const TextSpan(
@@ -82,6 +106,10 @@ class PanduanPajakPage extends StatelessWidget {
             ),
           ),
 
+<<<<<<< HEAD
+=======
+          // Nomor 4
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           RichText(
             textAlign: TextAlign.justify,
             text: const TextSpan(
@@ -99,6 +127,10 @@ class PanduanPajakPage extends StatelessWidget {
             ),
           ),
 
+<<<<<<< HEAD
+=======
+          // Nomor 5
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           RichText(
             textAlign: TextAlign.justify,
             text: const TextSpan(
@@ -116,6 +148,10 @@ class PanduanPajakPage extends StatelessWidget {
             ),
           ),
 
+<<<<<<< HEAD
+=======
+          // Nomor 6
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
           RichText(
             textAlign: TextAlign.justify,
             text: const TextSpan(
@@ -133,6 +169,7 @@ class PanduanPajakPage extends StatelessWidget {
               ],
             ),
           ),
+<<<<<<< HEAD
 
           const SizedBox(height: 20),
           const Divider(thickness: 1),
@@ -199,6 +236,8 @@ class PanduanPajakPage extends StatelessWidget {
             style: TextStyle(fontSize: 16, height: 1.5),
           ),
           const SizedBox(height: 20),
+=======
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
         ],
       ),
     );

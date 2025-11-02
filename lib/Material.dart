@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 import 'package:flutter/material.dart';
 
 const Color primaryBlue = Color(0xFF002E7A);
