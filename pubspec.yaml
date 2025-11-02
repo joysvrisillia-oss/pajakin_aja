@@ -1,9 +1,5 @@
-name: pajakin_aja
-<<<<<<< HEAD
+name: pajakin_fix
 description: Aplikasi kalkulator pajak lengkap (PPh, UMKM, PBB, PPN)
-=======
-description: A new Flutter project.
->>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -19,15 +15,5 @@ dependencies:
 
 flutter:
   uses-material-design: true
-<<<<<<< HEAD
-
-  assets:
-    - assets/logo.png
-=======
   assets:
     - assets/images/logo.png
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
->>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701

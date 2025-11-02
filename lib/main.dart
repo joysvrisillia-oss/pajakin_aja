@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'Home_Page.dart';
-import 'Kalkulator_Pajak.dart';
-import 'Riwayat_Perhitungan.dart';
-import 'Material.dart';
+import 'Views/Home_Page.dart';
+import 'Views/Kalkulator_Pajak.dart';
+import 'Views/Riwayat_Perhitungan.dart';
+import 'Utils/Material.dart';
 
 
 
 
 import 'package:flutter/material.dart';
-import 'Home_Page.dart';
-import 'Material.dart';
+import 'Views/Home_Page.dart';
+import 'Utils/Material.dart';
 
 void main() {
   runApp(const PajakinApp());
