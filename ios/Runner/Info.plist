@@ -5,7 +5,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
+<<<<<<< HEAD
 	<string>Mobileprogramming Aplikasi Kalkulator Digital Pajakin Aja</string>
+=======
+<<<<<<< HEAD
+	<string>Mobileprogramming Aplikasi Kalkulator Pajak Pajakinaja</string>
+=======
+	<string>Pajakin Aja</string>
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +21,15 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+<<<<<<< HEAD
 	<string>mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja</string>
+=======
+<<<<<<< HEAD
+	<string>mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja</string>
+=======
+	<string>pajakin_aja</string>
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

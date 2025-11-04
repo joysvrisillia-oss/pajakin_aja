@@ -146,7 +146,7 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: warna.withOpacity(0.1),
+                backgroundColor: warna.withAlpha(25),
                 child: Icon(icon, color: warna),
               ),
               title: Text(
@@ -236,3 +236,4 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
     );
   }
 }
+

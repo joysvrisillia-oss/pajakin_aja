@@ -27,7 +27,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
+<<<<<<< HEAD
   if (!window.Create(L"mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja", origin, size)) {
+=======
+<<<<<<< HEAD
+  if (!window.Create(L"mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja", origin, size)) {
+=======
+  if (!window.Create(L"pajakin_aja", origin, size)) {
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

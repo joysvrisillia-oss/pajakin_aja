@@ -1,6 +1,16 @@
 {
+<<<<<<< HEAD
     "name": "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja",
     "short_name": "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja",
+=======
+<<<<<<< HEAD
+    "name": "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja",
+    "short_name": "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja",
+=======
+    "name": "pajakin_aja",
+    "short_name": "pajakin_aja",
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

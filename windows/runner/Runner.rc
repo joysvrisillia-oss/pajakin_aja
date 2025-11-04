@@ -90,12 +90,30 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
+<<<<<<< HEAD
             VALUE "FileDescription", "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja.exe" "\0"
             VALUE "ProductName", "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja" "\0"
+=======
+<<<<<<< HEAD
+            VALUE "FileDescription", "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja.exe" "\0"
+            VALUE "ProductName", "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja" "\0"
+=======
+            VALUE "FileDescription", "pajakin_aja" "\0"
+            VALUE "FileVersion", VERSION_AS_STRING "\0"
+            VALUE "InternalName", "pajakin_aja" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "pajakin_aja.exe" "\0"
+            VALUE "ProductName", "pajakin_aja" "\0"
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

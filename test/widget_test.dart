@@ -8,7 +8,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+<<<<<<< HEAD
 import 'package:mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja/main.dart';
+=======
+<<<<<<< HEAD
+import 'package:mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja/main.dart';
+=======
+import 'package:pajakin_aja/main.dart';
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

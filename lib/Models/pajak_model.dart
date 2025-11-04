@@ -1,5 +1,5 @@
 class PajakModel {
-  final int? id; // ← tambahkan id di sini
+  final int? id;
   final String jenisPajak;
   final double nilai;
   final double pajak;

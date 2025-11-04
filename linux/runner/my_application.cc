@@ -46,11 +46,27 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
+<<<<<<< HEAD
     gtk_header_bar_set_title(header_bar, "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
     gtk_window_set_title(window, "mobileprogramming_aplikasi_kalkulator_digital_pajakin_aja");
+=======
+<<<<<<< HEAD
+    gtk_header_bar_set_title(header_bar, "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja");
+    gtk_header_bar_set_show_close_button(header_bar, TRUE);
+    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+  } else {
+    gtk_window_set_title(window, "mobileprogramming_aplikasi_kalkulator_pajak_pajakinaja");
+=======
+    gtk_header_bar_set_title(header_bar, "pajakin_aja");
+    gtk_header_bar_set_show_close_button(header_bar, TRUE);
+    gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
+  } else {
+    gtk_window_set_title(window, "pajakin_aja");
+>>>>>>> 6c1cc143556c4c7dadd7d75c38a5dbdaf6d09701
+>>>>>>> 1430f5cddce99cb320d408ffac2c47989ea3b856
   }
 
   gtk_window_set_default_size(window, 1280, 720);

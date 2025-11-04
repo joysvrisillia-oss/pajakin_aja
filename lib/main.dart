@@ -2,14 +2,7 @@ import 'package:flutter/material.dart';
 import 'Views/Home_Page.dart';
 import 'Views/Kalkulator_Pajak.dart';
 import 'Views/Riwayat_Perhitungan.dart';
-import 'Utils/Material.dart';
-
-
-
-
-import 'package:flutter/material.dart';
-import 'Views/Home_Page.dart';
-import 'Utils/Material.dart';
+import 'Utils/material.dart';
 
 void main() {
   runApp(const PajakinApp());
@@ -21,9 +14,11 @@ class PajakinApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pajakin Aja!',
+      title: 'Pajakin Aja',
       debugShowCheckedModeBanner: false,
-      theme: appTheme,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: const HomePage(),
     );
   }
