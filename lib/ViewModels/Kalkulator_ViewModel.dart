@@ -56,12 +56,19 @@ class KalkulatorViewModel extends ChangeNotifier {
     hasilRincian = rincian;
     notifyListeners();
 
-    await DBHelper.insertPajak(PajakModel(
-      jenisPajak: jenisPajak,
-      nilai: nilai,
-      pajak: pajak,
-      waktu: DateTime.now().toString(),
-    ));
+    final email = await DBHelper.getLoggedInUser();
+
+    await DBHelper.insertPajak(
+      PajakModel(
+        jenisPajak: jenisPajak,
+        nilai: nilai,
+        pajak: pajak,
+        waktu: DateTime.now().toString(),
+        userEmail: email!,    // ← tidak error lagi
+      ),
+    );
+
+
   }
 
   Map<String, dynamic> _hitungPPhPribadiDetail(double penghasilan) {

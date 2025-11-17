@@ -79,12 +79,16 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
     });
 
     // Simpan ke SQLite
+    final email = await DBHelper.getLoggedInUser();
+
     await DBHelper.insertPajak(PajakModel(
       jenisPajak: _jenisPajak,
       nilai: nilai,
       pajak: pajak,
       waktu: DateTime.now().toString(),
+      userEmail: email!,
     ));
+
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'Kalkulator_Pajak.dart';
 import 'Riwayat_Perhitungan.dart';
 import 'Panduan_Pajak.dart';
 import '../Utils/Material.dart';
+import '../Database/db_helper.dart';
+import '../Auth/login_page.dart';
+import 'Api_PPN_Page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -24,7 +26,6 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
-            const SizedBox(height: 20),
             Image.asset(
               'assets/images/logo.png',
               height: 100,
@@ -41,15 +42,14 @@ class HomePage extends StatelessWidget {
               style: TextStyle(color: Colors.white70),
             ),
             const SizedBox(height: 40),
+
             Expanded(
               child: Container(
                 width: double.infinity,
-                padding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                 decoration: const BoxDecoration(
                   color: Color(0xFFEAF5FF),
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(40)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
                 ),
                 child: Column(
                   children: [
@@ -60,9 +60,7 @@ class HomePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const KalkulatorPajak(),
-                          ),
+                          MaterialPageRoute(builder: (_) => const KalkulatorPajak()),
                         );
                       },
                     ),
@@ -73,10 +71,7 @@ class HomePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                            const RiwayatPerhitunganPage(),
-                          ),
+                          MaterialPageRoute(builder: (_) => const RiwayatPerhitunganPage()),
                         );
                       },
                     ),
@@ -87,11 +82,42 @@ class HomePage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const PanduanPajakPage(),
-                          ),
+                          MaterialPageRoute(builder: (_) => const PanduanPajakPage()),
                         );
                       },
+                    ),
+
+                    /// ---- MENU API BARU ADA DI SINI ----
+                    MenuCard(
+                      icon: Icons.public,
+                      title: 'Tarif PPN Dunia (API)',
+                      subtitle: 'Lihat tarif PPN beberapa negara',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ApiPPNPage()),
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    GestureDetector(
+                      onTap: () async {
+                        await DBHelper.logout();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const LoginPage()),
+                        );
+                      },
+                      child: Text(
+                        "Keluar Akun",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
                     ),
                   ],
                 ),

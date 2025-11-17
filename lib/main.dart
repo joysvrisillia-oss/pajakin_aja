@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Views/Home_Page.dart';
 import 'Auth/login_page.dart';
+import 'Database/db_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final prefs = await SharedPreferences.getInstance();
-  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final email = await DBHelper.getLoggedInUser();
 
-  runApp(PajakinApp(isLoggedIn: isLoggedIn));
+  runApp(PajakinApp(
+    isLoggedIn: email != null,
+  ));
 }
 
 class PajakinApp extends StatelessWidget {

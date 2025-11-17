@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pajakin_fix/Database/db_helper.dart';
 import 'package:pajakin_fix/Views/Home_Page.dart';
 import 'package:pajakin_fix/Auth/register_page.dart';
+import 'package:pajakin_fix/Views/Admin_Page.dart'; // ← WAJIB
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,14 +20,22 @@ class _LoginPageState extends State<LoginPage> {
     final user = await DBHelper.loginUser(emailC.text, passwordC.text);
 
     if (user != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('email', user['email']);
+      final role = user['role'];
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
-      );
+      if (role == 'admin') {
+        // MASUK HALAMAN ADMIN
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminPage()),
+        );
+      } else {
+        // MASUK HALAMAN USER
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
+      }
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Email atau password salah")),
@@ -91,8 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (_) => const RegisterPage()),
+                      MaterialPageRoute(builder: (_) => const RegisterPage()),
                     );
                   },
                   child: const Text(

@@ -29,7 +29,9 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
   }
 
   Future<void> _loadRiwayat() async {
-    final data = await DBHelper.getAllPajak();
+    final email = await DBHelper.getLoggedInUser();
+    final data = await DBHelper.getPajakByUser(email!);
+
     setState(() {
       _riwayat = data.reversed.toList(); // terbaru di atas
     });
@@ -41,7 +43,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
   }
 
   Future<void> _hapusSemuaRiwayat() async {
-    await DBHelper.deleteAll();
+    final email = await DBHelper.getLoggedInUser();
+    await DBHelper.deleteAll(email!);
     setState(() => _riwayat.clear());
   }
 
