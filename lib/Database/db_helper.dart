@@ -5,8 +5,10 @@ import '../Models/pajak_model.dart';
 class DBHelper {
   static Database? _db;
 
+  // Dapatkan database, inisialisasi kalau belum ada
   static Future<Database> getDatabase() async {
     if (_db != null) return _db!;
+
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'pajakin.db');
 
@@ -14,53 +16,73 @@ class DBHelper {
       path,
       version: 3,
       onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE users(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL,
-            role TEXT NOT NULL DEFAULT 'user'
-          )
-        ''');
-
-        await db.execute('''
-          INSERT INTO users(email, password, role)
-          VALUES ('admin@pajak.com', 'admin', 'admin')
-        ''');
-
-        await db.execute('''
-          CREATE TABLE pajak(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            jenisPajak TEXT,
-            nilai REAL,
-            pajak REAL,
-            waktu TEXT,
-            user_email TEXT
-          )
-        ''');
-
-        await db.execute('''
-          CREATE TABLE session(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT,
-            role TEXT
-          )
-        ''');
+        await _createTables(db);
+        await _insertDefaultAdmin(db);
       },
-
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 3) {
+          // Tambahkan kolom baru kalau belum ada
           try {
-            await db.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'");
+            await db.execute(
+                "ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'user'");
           } catch (e) {}
 
-          try {
-            await db.execute("ALTER TABLE session ADD COLUMN role TEXT");
-          } catch (e) {}
+          // Pastikan tabel session ada
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS session(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              email TEXT,
+              role TEXT
+            )
+          ''');
         }
       },
     );
+
     return _db!;
+  }
+
+  // Buat semua tabel
+  static Future<void> _createTables(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user'
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS pajak(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        jenisPajak TEXT,
+        nilai REAL,
+        pajak REAL,
+        waktu TEXT,
+        user_email TEXT
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS session(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT,
+        role TEXT
+      )
+    ''');
+  }
+
+  // Insert admin default
+  static Future<void> _insertDefaultAdmin(Database db) async {
+    final result = await db.query('users', where: 'email = ?', whereArgs: ['admin@pajak.com']);
+    if (result.isEmpty) {
+      await db.insert('users', {
+        'email': 'admin@pajak.com',
+        'password': 'admin',
+        'role': 'admin',
+      });
+    }
   }
 
   // REGISTER USER

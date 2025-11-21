@@ -5,7 +5,8 @@ import 'Panduan_Pajak.dart';
 import '../Utils/Material.dart';
 import '../Database/db_helper.dart';
 import '../Auth/login_page.dart';
-import 'Api_PPN_Page.dart';
+import 'Api_Holiday_Page.dart';
+import 'Api_Reminder_Date.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -26,21 +27,25 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 60),
+
             Image.asset(
               'assets/images/logo.png',
               height: 100,
             ),
+
             const SizedBox(height: 20),
             const Text(
               'Selamat Datang di Pajakin Aja!',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
+
             const SizedBox(height: 10),
             const Text(
               'Hitung pajak pribadi, bisnis, dan lainnya dengan cepat\n& akurat',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white70),
             ),
+
             const SizedBox(height: 40),
 
             Expanded(
@@ -51,75 +56,90 @@ class HomePage extends StatelessWidget {
                   color: Color(0xFFEAF5FF),
                   borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
                 ),
-                child: Column(
-                  children: [
-                    MenuCard(
-                      icon: Icons.calculate_outlined,
-                      title: 'Kalkulator Pajak',
-                      subtitle: 'PPh, UMKM, PBB & PPN',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const KalkulatorPajak()),
-                        );
-                      },
-                    ),
-                    MenuCard(
-                      icon: Icons.history,
-                      title: 'Riwayat Perhitungan',
-                      subtitle: 'Daftar perhitungan tersimpan',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const RiwayatPerhitunganPage()),
-                        );
-                      },
-                    ),
-                    MenuCard(
-                      icon: Icons.info_outline,
-                      title: 'Panduan & Tips Pajak',
-                      subtitle: 'Aturan dan tips singkat',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const PanduanPajakPage()),
-                        );
-                      },
-                    ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      MenuCard(
+                        icon: Icons.calculate_outlined,
+                        title: 'Kalkulator Pajak',
+                        subtitle: 'PPh, UMKM, PBB & PPN',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const KalkulatorPajak()),
+                          );
+                        },
+                      ),
 
-                    /// ---- MENU API BARU ADA DI SINI ----
-                    MenuCard(
-                      icon: Icons.public,
-                      title: 'Tarif PPN Dunia (API)',
-                      subtitle: 'Lihat tarif PPN beberapa negara',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const ApiPPNPage()),
-                        );
-                      },
-                    ),
+                      MenuCard(
+                        icon: Icons.history,
+                        title: 'Riwayat Perhitungan',
+                        subtitle: 'Daftar perhitungan tersimpan',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const RiwayatPerhitunganPage()),
+                          );
+                        },
+                      ),
 
-                    const SizedBox(height: 20),
+                      MenuCard(
+                        icon: Icons.info_outline,
+                        title: 'Panduan & Tips Pajak',
+                        subtitle: 'Aturan dan tips singkat',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const PanduanPajakPage()),
+                          );
+                        },
+                      ),
 
-                    GestureDetector(
-                      onTap: () async {
-                        await DBHelper.logout();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => const LoginPage()),
-                        );
-                      },
-                      child: Text(
-                        "Keluar Akun",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red.shade700,
+                      MenuCard(
+                        icon: Icons.event,
+                        title: 'Hari Libur Dunia (API)',
+                        subtitle: 'Cek hari libur resmi banyak negara',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const ApiHolidayPage()),
+                          );
+                        },
+                      ),
+
+                      MenuCard(
+                        icon: Icons.alarm,
+                        title: 'Pengingat Pajak (API)',
+                        subtitle: 'Set pengingat bayar pajak',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const TaxReminderPage()),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      GestureDetector(
+                        onTap: () async {
+                          await DBHelper.logout();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => const LoginPage()),
+                          );
+                        },
+                        child: Text(
+                          "Keluar Akun",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red.shade700,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
