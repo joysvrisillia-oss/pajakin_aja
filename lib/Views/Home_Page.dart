@@ -6,7 +6,7 @@ import '../Utils/Material.dart';
 import '../Database/db_helper.dart';
 import '../Auth/login_page.dart';
 import 'Api_Holiday_Page.dart';
-import 'Api_Reminder_Date.dart';
+import 'Reminder_Date.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
 
                       MenuCard(
                         icon: Icons.alarm,
-                        title: 'Pengingat Pajak (API)',
+                        title: 'Pengingat Pajak',
                         subtitle: 'Set pengingat bayar pajak',
                         onTap: () {
                           Navigator.push(
