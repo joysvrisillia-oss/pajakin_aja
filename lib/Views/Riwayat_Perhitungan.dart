@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../Database/db_helper.dart';
@@ -33,7 +32,11 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
     final data = await DBHelper.getPajakByUser(email!);
 
     setState(() {
-      _riwayat = data.reversed.toList(); // terbaru di atas
+      _riwayat = data
+          .map((item) => PajakModel.fromMap(item))
+          .toList()
+          .reversed
+          .toList();
     });
   }
 
@@ -45,6 +48,7 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
   Future<void> _hapusSemuaRiwayat() async {
     final email = await DBHelper.getLoggedInUser();
     await DBHelper.deleteAll(email!);
+
     setState(() => _riwayat.clear());
   }
 
@@ -73,8 +77,9 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
         ),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text("Tutup")),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("Tutup"),
+          ),
         ],
       ),
     );

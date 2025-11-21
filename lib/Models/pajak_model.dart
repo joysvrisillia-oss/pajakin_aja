@@ -1,10 +1,10 @@
 class PajakModel {
-  final int? id;
-  final String jenisPajak;
-  final double nilai;
-  final double pajak;
-  final String waktu;
-  final String userEmail;
+  int? id;
+  String jenisPajak;
+  double nilai;
+  double pajak;
+  String waktu;
+  String userEmail;
 
   PajakModel({
     this.id,
@@ -17,23 +17,23 @@ class PajakModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'jenisPajak': jenisPajak,
-      'nilai': nilai,
-      'pajak': pajak,
-      'waktu': waktu,
-      'user_email': userEmail,
+      "id": id,
+      "jenisPajak": jenisPajak,
+      "nilai": nilai,
+      "pajak": pajak,
+      "waktu": waktu,
+      "email": userEmail,
     };
   }
 
   factory PajakModel.fromMap(Map<String, dynamic> map) {
     return PajakModel(
-      id: map['id'],
-      jenisPajak: map['jenisPajak'],
-      nilai: (map['nilai'] as num).toDouble(),
-      pajak: (map['pajak'] as num).toDouble(),
-      waktu: map['waktu'],
-      userEmail: map['user_email'] ?? "",
+      id: map["id"],
+      jenisPajak: map["jenisPajak"],
+      nilai: map["nilai"],
+      pajak: map["pajak"],
+      waktu: map["waktu"],
+      userEmail: map["email"],
     );
   }
 }
