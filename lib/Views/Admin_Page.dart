@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Database/db_helper.dart';
 import '../Auth/login_page.dart';
+import 'kalkulator_pajak.dart'; // pastikan path ini sesuai lokasi file kamu
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
@@ -32,7 +33,13 @@ class AdminPage extends StatelessWidget {
             leading: const Icon(Icons.calculate),
             title: const Text("Kelola Perhitungan Pajak"),
             subtitle: const Text("Admin dapat menghapus / review data pajak"),
-            onTap: () {},
+            onTap: () {
+              // NAVIGASI: langsung masuk ke halaman Kalkulator Pajak
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const KalkulatorPajak()),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.menu_book),
