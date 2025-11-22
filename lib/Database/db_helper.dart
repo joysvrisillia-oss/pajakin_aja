@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../Models/pajak_model.dart';
 
 class DBHelper {
@@ -20,19 +19,18 @@ class DBHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // ← Penting! Biar DB migrate & kolom isLoggedIn muncul
       onCreate: (db, version) async {
-        // users table
         await db.execute('''
           CREATE TABLE users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE,
             password TEXT,
-            role TEXT
+            role TEXT,
+            isLoggedIn INTEGER DEFAULT 0
           )
         ''');
 
-        // pajak (riwayat)
         await db.execute('''
           CREATE TABLE pajak(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,7 +42,6 @@ class DBHelper {
           )
         ''');
 
-        // tax_settings - store one row JSON (string)
         await db.execute('''
           CREATE TABLE tax_settings(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,14 +49,15 @@ class DBHelper {
           )
         ''');
 
-        // default admin account
+        // Default admin
         await db.insert("users", {
           "email": "admin@gmail.com",
           "password": "admin123",
-          "role": "admin"
+          "role": "admin",
+          "isLoggedIn": 0
         });
 
-        // default tax settings as JSON
+        // Default tax settings
         final defaultSettings = jsonEncode({
           "pph": [0.05, 0.15, 0.25, 0.30, 0.35],
           "umkm": 0.005,
@@ -77,40 +75,11 @@ class DBHelper {
     );
   }
 
-  // ---------- SESSION helpers ----------
-  static Future<void> _saveLoggedInEmail(String email) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('loggedInEmail', email);
-  }
-
-  static Future<String?> getLoggedInUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('loggedInEmail');
-  }
-
-  static Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('loggedInEmail');
-  }
-
-  // ---------- REGISTER (named params, so RegisterPage works) ----------
-  static Future<void> registerUser({
-    required String email,
-    required String password,
-  }) async {
-    final db = await database;
-    await db.insert(
-      "users",
-      {"email": email, "password": password, "role": "user"},
-      conflictAlgorithm: ConflictAlgorithm.fail,
-    );
-  }
-
-  // ---------- LOGIN (used by LoginPage) ----------
-  // returns the user row as Map if success, else null
+  // ---------- SESSION (SQLite only) ----------
   static Future<Map<String, dynamic>?> loginUser(
       String email, String password) async {
     final db = await database;
+
     final res = await db.query(
       "users",
       where: "email = ? AND password = ?",
@@ -118,35 +87,88 @@ class DBHelper {
     );
 
     if (res.isNotEmpty) {
-      // save session
-      await _saveLoggedInEmail(email);
+      await db.update("users", {"isLoggedIn": 0});
+
+      await db.update(
+        "users",
+        {"isLoggedIn": 1},
+        where: "email = ?",
+        whereArgs: [email],
+      );
+
       return res.first;
     }
     return null;
   }
 
+  static Future<void> logout() async {
+    final db = await database;
+    await db.update("users", {"isLoggedIn": 0});
+  }
+
+  static Future<String?> getLoggedInUser() async {
+    final db = await database;
+
+    final res = await db.query(
+      "users",
+      where: "isLoggedIn = 1",
+      limit: 1,
+    );
+
+    if (res.isNotEmpty) return res.first["email"] as String;
+    return null;
+  }
+
+  static Future<String?> getLoggedInUserRole() async {
+    final db = await database;
+
+    final res = await db.query(
+      "users",
+      columns: ["role"],
+      where: "isLoggedIn = 1",
+      limit: 1,
+    );
+
+    if (res.isNotEmpty) return res.first["role"] as String;
+    return null;
+  }
+
+  // ---------- REGISTER ----------
+  static Future<void> registerUser({
+    required String email,
+    required String password,
+  }) async {
+    final db = await database;
+
+    await db.insert(
+      "users",
+      {
+        "email": email,
+        "password": password,
+        "role": "user",
+        "isLoggedIn": 0
+      },
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+  }
+
   // ---------- PAJAK (riwayat) ----------
-  // insertPajak expects PajakModel
   static Future<int> insertPajak(PajakModel model) async {
     final db = await database;
     return await db.insert("pajak", model.toMap());
   }
 
-  // getPajakByUser returns List<Map<String,dynamic>> to remain compatible
-  // with existing UI that expects raw maps (or other parts that used it)
   static Future<List<Map<String, dynamic>>> getPajakByUser(
       String email) async {
     final db = await database;
-    final res = await db.query(
+    return await db.query(
       "pajak",
       where: "email = ?",
       whereArgs: [email],
       orderBy: "id DESC",
     );
-    return res;
   }
 
-  // convenience: return strongly typed List<PajakModel>
   static Future<List<PajakModel>> getRiwayatModelsByEmail(
       String email) async {
     final rows = await getPajakByUser(email);
@@ -158,19 +180,17 @@ class DBHelper {
     return await db.delete("pajak", where: "id = ?", whereArgs: [id]);
   }
 
-  // delete all per user
   static Future<int> deleteAll(String email) async {
     final db = await database;
     return await db.delete("pajak", where: "email = ?", whereArgs: [email]);
   }
 
-  // ---------- TAX SETTINGS (JSON single-row) ----------
-  // get settings as Map (decoded JSON)
+  // ---------- TAX SETTINGS ----------
   static Future<Map<String, dynamic>> getTaxSettings() async {
     final db = await database;
     final rows = await db.query("tax_settings", limit: 1);
+
     if (rows.isEmpty) {
-      // fallback default if somehow absent
       return {
         "pph": [0.05, 0.15, 0.25, 0.30, 0.35],
         "umkm": 0.005,
@@ -178,24 +198,26 @@ class DBHelper {
         "ppn": 0.11,
       };
     }
+
     final dataStr = rows.first['data'] as String;
-    final decoded = jsonDecode(dataStr) as Map<String, dynamic>;
-    return decoded;
+    return jsonDecode(dataStr);
   }
 
-  // update whole settings (pass a Map)
   static Future<int> updateTaxSettings(Map<String, dynamic> newSettings) async {
     final db = await database;
     final jsonStr = jsonEncode(newSettings);
 
-    // if table empty, insert; else update first row
     final rows = await db.query("tax_settings", limit: 1);
     if (rows.isEmpty) {
       return await db.insert("tax_settings", {"data": jsonStr});
     } else {
       final id = rows.first['id'] as int;
-      return await db.update("tax_settings", {"data": jsonStr},
-          where: "id = ?", whereArgs: [id]);
+      return await db.update(
+        "tax_settings",
+        {"data": jsonStr},
+        where: "id = ?",
+        whereArgs: [id],
+      );
     }
   }
 }

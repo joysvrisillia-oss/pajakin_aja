@@ -16,6 +16,8 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
   String _hasilRincian = "";
   double _hasilPajak = 0.0;
 
+  bool _isAdmin = false;
+
   final formatRupiah =
   NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
@@ -30,6 +32,30 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
     'Pajak Bisnis (UMKM)': Colors.green,
     'Pajak Lainnya (PBB & PPN)': Colors.purple,
   };
+
+  @override
+  void initState() {
+    super.initState();
+    _cekRole();
+  }
+
+  Future<void> _cekRole() async {
+    try {
+      final roleMethod = DBHelper.getLoggedInUserRole;
+      if (roleMethod != null) {
+        final role = await DBHelper.getLoggedInUserRole();
+        setState(() {
+          _isAdmin = (role != null && role.toLowerCase() == 'admin');
+        });
+        return;
+      }
+    } catch (_) {}
+
+    final email = await DBHelper.getLoggedInUser();
+    setState(() {
+      _isAdmin = (email != null && email == 'admin@example.com');
+    });
+  }
 
   void _hitungPajak() async {
     double nilai = double.tryParse(_nilaiController.text) ?? 0.0;
@@ -67,7 +93,6 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
       _hasilRincian = rincian;
     });
 
-    // SIMPAN KE DATABASE
     final email = await DBHelper.getLoggedInUser();
 
     await DBHelper.insertPajak(
@@ -76,7 +101,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
         nilai: nilai,
         pajak: pajak,
         waktu: DateTime.now().toString(),
-        userEmail: email!,
+        userEmail: email ?? '',
       ),
     );
 
@@ -97,7 +122,8 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
 
     for (int i = 0; i < tarif.length; i++) {
       double lower = (i == 0) ? 0 : batas[i - 1].toDouble();
-      double upper = (i < batas.length) ? batas[i].toDouble() : double.infinity;
+      double upper =
+      (i < batas.length) ? batas[i].toDouble() : double.infinity;
 
       if (penghasilan > lower) {
         double kena = (penghasilan < upper ? penghasilan : upper) - lower;
@@ -122,7 +148,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
           text: line + "\n",
           style: TextStyle(
             fontSize: 16,
-            color: line.contains("Total =") ? Colors.black : Colors.black,
+            color: Colors.black,
             fontWeight:
             line.contains("Total =") ? FontWeight.bold : FontWeight.normal,
           ),
@@ -131,6 +157,14 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
     }
 
     return RichText(text: TextSpan(children: spans));
+  }
+
+  void _bukaSettingPlaceholder(String jenis) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          content: Text(
+              'Edit regulasi untuk "$jenis" belum diimplementasikan.')),
+    );
   }
 
   @override
@@ -149,19 +183,57 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
             children: [
               DropdownButtonFormField<String>(
                 value: _jenisPajak,
-                items: _pajakIcons.keys.map((jenis) {
-                  return DropdownMenuItem(
-                    value: jenis,
-                    child: Row(
+
+                // ICON SETTING TUNGGAL DI KANAN (tidak ganda lagi)
+                icon: _isAdmin ? const Icon(Icons.settings) : const Icon(Icons.arrow_drop_down),
+
+                // selectedItemBuilder agar dropdown tetap ada iconnya
+                selectedItemBuilder: (context) {
+                  return _pajakIcons.keys.map((jenis) {
+                    return Row(
                       children: [
                         Icon(_pajakIcons[jenis], color: _pajakColors[jenis]),
                         const SizedBox(width: 8),
                         Text(jenis),
                       ],
+                    );
+                  }).toList();
+                },
+
+                items: _pajakIcons.keys.map((jenis) {
+                  return DropdownMenuItem(
+                    value: jenis,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              _pajakIcons[jenis],
+                              color: _pajakColors[jenis],
+                            ),
+                            const SizedBox(width: 8),
+                            Text(jenis),
+                          ],
+                        ),
+
+                        // ICON SETTING KECIL DI DALAM DROPDOWN
+                        if (_isAdmin)
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            icon: const Icon(Icons.settings, size: 18),
+                            onPressed: () {
+                              _bukaSettingPlaceholder(jenis);
+                            },
+                          ),
+                      ],
                     ),
                   );
                 }).toList(),
+
                 onChanged: (v) => setState(() => _jenisPajak = v!),
+
                 decoration: const InputDecoration(
                   labelText: "Pilih Jenis Pajak",
                   border: OutlineInputBorder(),
@@ -198,8 +270,8 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade700,
                     foregroundColor: Colors.white,
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
                   ),
                 ),
               ),
