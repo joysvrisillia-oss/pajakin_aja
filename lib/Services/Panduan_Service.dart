@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import '../Models/Panduan_Model.dart';
 
 class PanduanService {
-  // Ganti dengan URL MockAPI kamu
   final String baseUrl = "https://6922a88b09df4a492322f92e.mockapi.io/panduan";
 
   /// GET semua panduan

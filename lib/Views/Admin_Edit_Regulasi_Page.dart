@@ -1,6 +1,3 @@
-// File 1: lib/Views/Admin_Edit_Regulasi_Page.dart
-// Halaman edit regulasi — input/display menggunakan PERSEN (mis. 0.5% ditulis 0.5)
-
 import 'package:flutter/material.dart';
 import '../Database/db_helper.dart';
 
