@@ -6,7 +6,7 @@ import '../Models/pajak_model.dart';
 class DBHelper {
   static Database? _db;
 
-  // ---------- Database init ----------
+  // ---------- INIT DATABASE ----------
   static Future<Database> get database async {
     if (_db != null) return _db!;
     _db = await _initDB();
@@ -19,8 +19,9 @@ class DBHelper {
 
     return await openDatabase(
       path,
-      version: 2, // ← Penting! Biar DB migrate & kolom isLoggedIn muncul
+      version: 3, // <-- dinaikkan agar "reminders" ikut dibuat
       onCreate: (db, version) async {
+        // USERS
         await db.execute('''
           CREATE TABLE users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,6 +32,7 @@ class DBHelper {
           )
         ''');
 
+        // RIWAYAT PAJAK
         await db.execute('''
           CREATE TABLE pajak(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,6 +44,7 @@ class DBHelper {
           )
         ''');
 
+        // TAX SETTINGS
         await db.execute('''
           CREATE TABLE tax_settings(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,7 +52,19 @@ class DBHelper {
           )
         ''');
 
-        // Default admin
+        // REMINDER
+        await db.execute('''
+          CREATE TABLE reminders(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            judul TEXT,
+            deskripsi TEXT,
+            tanggal TEXT,
+            jam TEXT,
+            isDone INTEGER DEFAULT 0
+          )
+        ''');
+
+        // Default Admin
         await db.insert("users", {
           "email": "admin@gmail.com",
           "password": "admin123",
@@ -63,21 +78,32 @@ class DBHelper {
           "umkm": 0.005,
           "pbb": 0.001,
           "ppn": 0.11,
-          "labels": {
-            "pph": "PPh Pribadi",
-            "umkm": "Pajak Bisnis (UMKM)",
-            "lainnya": "Pajak Lainnya (PBB & PPN)"
-          }
         });
 
         await db.insert("tax_settings", {"data": defaultSettings});
       },
+
+      // MIGRATION (jika DB lama tidak punya reminders)
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 3) {
+          await db.execute('''
+            CREATE TABLE reminders(
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              judul TEXT,
+              deskripsi TEXT,
+              tanggal TEXT,
+              jam TEXT,
+              isDone INTEGER DEFAULT 0
+            )
+          ''');
+        }
+      },
     );
   }
 
-  // ---------- SESSION (SQLite only) ----------
-  static Future<Map<String, dynamic>?> loginUser(
-      String email, String password) async {
+  // ---------- SESSION ----------
+  static Future<Map<String, dynamic>?> loginUser(String email,
+      String password) async {
     final db = await database;
 
     final res = await db.query(
@@ -88,14 +114,12 @@ class DBHelper {
 
     if (res.isNotEmpty) {
       await db.update("users", {"isLoggedIn": 0});
-
       await db.update(
         "users",
         {"isLoggedIn": 1},
         where: "email = ?",
         whereArgs: [email],
       );
-
       return res.first;
     }
     return null;
@@ -108,27 +132,19 @@ class DBHelper {
 
   static Future<String?> getLoggedInUser() async {
     final db = await database;
-
-    final res = await db.query(
-      "users",
-      where: "isLoggedIn = 1",
-      limit: 1,
-    );
-
+    final res = await db.query("users", where: "isLoggedIn = 1", limit: 1);
     if (res.isNotEmpty) return res.first["email"] as String;
     return null;
   }
 
   static Future<String?> getLoggedInUserRole() async {
     final db = await database;
-
     final res = await db.query(
       "users",
       columns: ["role"],
       where: "isLoggedIn = 1",
       limit: 1,
     );
-
     if (res.isNotEmpty) return res.first["role"] as String;
     return null;
   }
@@ -139,7 +155,6 @@ class DBHelper {
     required String password,
   }) async {
     final db = await database;
-
     await db.insert(
       "users",
       {
@@ -152,14 +167,13 @@ class DBHelper {
     );
   }
 
-  // ---------- PAJAK (riwayat) ----------
+  // ---------- PAJAK ----------
   static Future<int> insertPajak(PajakModel model) async {
     final db = await database;
     return await db.insert("pajak", model.toMap());
   }
 
-  static Future<List<Map<String, dynamic>>> getPajakByUser(
-      String email) async {
+  static Future<List<Map<String, dynamic>>> getPajakByUser(String email) async {
     final db = await database;
     return await db.query(
       "pajak",
@@ -169,8 +183,7 @@ class DBHelper {
     );
   }
 
-  static Future<List<PajakModel>> getRiwayatModelsByEmail(
-      String email) async {
+  static Future<List<PajakModel>> getRiwayatModelsByEmail(String email) async {
     final rows = await getPajakByUser(email);
     return rows.map((r) => PajakModel.fromMap(r)).toList();
   }
@@ -198,9 +211,7 @@ class DBHelper {
         "ppn": 0.11,
       };
     }
-
-    final dataStr = rows.first['data'] as String;
-    return jsonDecode(dataStr);
+    return jsonDecode(rows.first['data'] as String);
   }
 
   static Future<int> updateTaxSettings(Map<String, dynamic> newSettings) async {
@@ -219,5 +230,38 @@ class DBHelper {
         whereArgs: [id],
       );
     }
+  }
+
+  // ---------------------------------------------------
+  // REMINDER CRUD (SQLite only)
+  // ---------------------------------------------------
+  // REMINDER CRUD
+  static Future<int> insertReminder(Map<String, dynamic> data) async {
+    final db = await database;
+    return await db.insert("reminders", data);
+  }
+
+  static Future<List<Map<String, dynamic>>> getReminders() async {
+    final db = await database;
+    return await db.query("reminders", orderBy: "id DESC");
+  }
+
+  static Future<int> updateReminder(int id, Map<String, dynamic> data) async {
+    final db = await database;
+    return await db.update(
+      "reminders",
+      data,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+  }
+
+  static Future<int> deleteReminder(int id) async {
+    final db = await database;
+    return await db.delete(
+      "reminders",
+      where: "id = ?",
+      whereArgs: [id],
+    );
   }
 }

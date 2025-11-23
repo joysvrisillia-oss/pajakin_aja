@@ -5,8 +5,7 @@ import 'Panduan_Pajak.dart';
 import '../Utils/Material.dart';
 import '../Database/db_helper.dart';
 import '../Auth/login_page.dart';
-import 'Api_Holiday_Page.dart';
-import 'Reminder_Date.dart';
+import 'Pengingat_Pembayaran.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -66,7 +65,9 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const KalkulatorPajak()),
+                            MaterialPageRoute(
+                              builder: (_) => const KalkulatorPajak(),
+                            ),
                           );
                         },
                       ),
@@ -78,7 +79,9 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const RiwayatPerhitunganPage()),
+                            MaterialPageRoute(
+                              builder: (_) => const RiwayatPerhitunganPage(),
+                            ),
                           );
                         },
                       ),
@@ -90,31 +93,23 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const PanduanPajakPage()),
+                            MaterialPageRoute(
+                              builder: (_) => const PanduanPajakPage(),
+                            ),
                           );
                         },
                       ),
 
                       MenuCard(
-                        icon: Icons.event,
-                        title: 'Hari Libur Dunia (API)',
-                        subtitle: 'Cek hari libur resmi banyak negara',
+                        icon: Icons.notifications_active,
+                        title: 'Pengingat Pembayaran Pajak',
+                        subtitle: 'Cek hari libur & set pengingat',
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const ApiHolidayPage()),
-                          );
-                        },
-                      ),
-
-                      MenuCard(
-                        icon: Icons.alarm,
-                        title: 'Pengingat Pajak',
-                        subtitle: 'Set pengingat bayar pajak',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const TaxReminderPage()),
+                            MaterialPageRoute(
+                              builder: (_) => PengingatPembayaranPage(),
+                            ),
                           );
                         },
                       ),
@@ -126,7 +121,9 @@ class HomePage extends StatelessWidget {
                           await DBHelper.logout();
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (_) => const LoginPage()),
+                            MaterialPageRoute(
+                              builder: (_) => const LoginPage(),
+                            ),
                           );
                         },
                         child: Text(
