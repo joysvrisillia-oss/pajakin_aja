@@ -19,7 +19,7 @@ class DBHelper {
 
     return await openDatabase(
       path,
-      version: 2, // ← Penting! Biar DB migrate & kolom isLoggedIn muncul
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE users(
