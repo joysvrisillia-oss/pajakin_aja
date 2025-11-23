@@ -19,7 +19,11 @@ class DBHelper {
 
     return await openDatabase(
       path,
+<<<<<<< HEAD
       version: 3, // <-- dinaikkan agar "reminders" ikut dibuat
+=======
+      version: 2,
+>>>>>>> 9b3f8c7673e5f963354075e173b945cb4cc62b7c
       onCreate: (db, version) async {
         // USERS
         await db.execute('''
