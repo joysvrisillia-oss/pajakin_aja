@@ -2,7 +2,7 @@ class ReminderModel {
   int? id;
   String judul;
   String tanggal;
-  int isDone;
+  int isDone; // 0 for false, 1 for true
 
   ReminderModel({
     this.id,
@@ -18,14 +18,5 @@ class ReminderModel {
       "tanggal": tanggal,
       "isDone": isDone,
     };
-  }
-
-  factory ReminderModel.fromMap(Map<String, dynamic> map) {
-    return ReminderModel(
-      id: map["id"],
-      judul: map["judul"],
-      tanggal: map["tanggal"],
-      isDone: map["isDone"] ?? 0,
-    );
   }
 }

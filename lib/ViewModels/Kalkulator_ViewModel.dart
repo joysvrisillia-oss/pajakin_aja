@@ -1,3 +1,4 @@
+// File: lib/ViewModels/Kalkulator_ViewModel.dart
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,7 @@ class KalkulatorViewModel extends ChangeNotifier {
     double pajak = 0.0;
     String rincian = "";
 
+    // Logika perhitungan (disingkat)
     if (jenisPajak == 'PPh Pribadi') {
       final hasil = _hitungPPhPribadiDetail(nilai);
       pajak = hasil['total'];
@@ -58,17 +60,17 @@ class KalkulatorViewModel extends ChangeNotifier {
 
     final email = await DBHelper.getLoggedInUser();
 
-    await DBHelper.insertPajak(
-      PajakModel(
-        jenisPajak: jenisPajak,
-        nilai: nilai,
-        pajak: pajak,
-        waktu: DateTime.now().toString(),
-        userEmail: email!,    // ← tidak error lagi
-      ),
+    // Buat objek PajakModel
+    final newPajak = PajakModel(
+      jenisPajak: jenisPajak,
+      nilai: nilai,
+      pajak: pajak,
+      waktu: DateTime.now().toString(),
+      userEmail: email!,
     );
 
-
+    // PERBAIKAN: Konversi PajakModel ke Map menggunakan .toMap()
+    await DBHelper.insertPajak(newPajak.toMap());
   }
 
   Map<String, dynamic> _hitungPPhPribadiDetail(double penghasilan) {

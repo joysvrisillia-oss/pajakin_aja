@@ -1,8 +1,10 @@
+// File: lib/Views/Kalkulator_Pajak.dart
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../Database/db_helper.dart';
-import '../Models/pajak_model.dart';
-import 'Admin_Edit_Regulasi_Page.dart';
+import '../Models/pajak_model.dart'; // Diperlukan untuk PajakModel
+import 'Admin_Edit_Regulasi_Page.dart'; // Diperlukan untuk navigasi
 
 class KalkulatorPajak extends StatefulWidget {
   const KalkulatorPajak({super.key});
@@ -95,6 +97,11 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
     double pajak = 0.0;
     String rincian = "";
 
+    // Pastikan pengaturan pajak sudah dimuat
+    if (_taxSettings.isEmpty) {
+      await _loadSettings();
+    }
+
     if (_jenisPajak == 'PPh Pribadi') {
       final hasil = _hitungPPhPribadiDetail(nilai);
       pajak = hasil['total'];
@@ -123,7 +130,17 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
 
     final email = await DBHelper.getLoggedInUser();
 
-    await DBHelper.insertPajak(PajakModel(jenisPajak: _jenisPajak, nilai: nilai, pajak: pajak, waktu: DateTime.now().toString(), userEmail: email ?? ''));
+    // 1. Buat objek PajakModel
+    final newPajak = PajakModel(
+        jenisPajak: _jenisPajak,
+        nilai: nilai,
+        pajak: pajak,
+        waktu: DateTime.now().toString(),
+        userEmail: email ?? ''
+    );
+
+    // 2. PERBAIKAN: Gunakan .toMap() saat memanggil DBHelper.insertPajak
+    await DBHelper.insertPajak(newPajak.toMap());
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Hasil pajak berhasil disimpan ke database SQLite.'), duration: Duration(seconds: 3)));
   }
