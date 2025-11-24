@@ -61,8 +61,10 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
       builder: (ctx) => AlertDialog(
         title: Text(
           "Detail ${item.jenisPajak}",
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.blueAccent),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.blue.shade800,
+          ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -143,7 +145,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
         itemCount: _riwayat.length,
         itemBuilder: (context, index) {
           final item = _riwayat[index];
-          final icon = _pajakIcons[item.jenisPajak] ?? Icons.receipt_long;
+          final icon =
+              _pajakIcons[item.jenisPajak] ?? Icons.receipt_long;
           final warna = _getColor(item.jenisPajak);
           final waktu = DateFormat('dd/MM/yyyy HH:mm')
               .format(DateTime.tryParse(item.waktu) ?? DateTime.now());
@@ -161,7 +164,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
               title: Text(
                 item.jenisPajak,
                 style: const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.black87),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 4),
@@ -207,7 +211,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                             },
                             child: const Text(
                               "Hapus",
-                              style: TextStyle(color: Colors.red),
+                              style:
+                              TextStyle(color: Colors.red),
                             ),
                           ),
                         ],
@@ -215,8 +220,8 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                     );
                   }
                 },
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
+                itemBuilder: (context) => const [
+                  PopupMenuItem(
                     value: 'detail',
                     child: Row(
                       children: [
@@ -226,7 +231,7 @@ class _RiwayatPerhitunganPageState extends State<RiwayatPerhitunganPage> {
                       ],
                     ),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'hapus',
                     child: Row(
                       children: [

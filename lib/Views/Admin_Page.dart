@@ -12,7 +12,7 @@ class AdminPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Admin Dashboard"),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.blue.shade800,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -33,7 +33,7 @@ class AdminPage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.calculate),
             title: const Text("Kelola Perhitungan Pajak"),
-            subtitle: const Text("Admin dapat menghapus / review data pajak"),
+            subtitle: const Text("Admin dapat mengedit, menghapus atau review data pajak"),
             onTap: () {
               Navigator.push(
                 context,

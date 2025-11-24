@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pajakin_fix/Database/db_helper.dart';
 import 'package:pajakin_fix/Views/Home_Page.dart';
 import 'package:pajakin_fix/Auth/register_page.dart';
-import 'package:pajakin_fix/Views/Admin_Page.dart'; // ← WAJIB
+import 'package:pajakin_fix/Views/Admin_Page.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -23,19 +23,16 @@ class _LoginPageState extends State<LoginPage> {
       final role = user['role'];
 
       if (role == 'admin') {
-        // MASUK HALAMAN ADMIN
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const AdminPage()),
         );
       } else {
-        // MASUK HALAMAN USER
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const HomePage()),
         );
       }
-
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Email atau password salah")),
@@ -49,18 +46,17 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color(0xFF1E3A8A),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.only(top: 60, left: 24, right: 24),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset('assets/images/logo.png', width: 150),
+                Image.asset('assets/images/logo.png', width: 250),
                 const SizedBox(height: 35),
                 const Text(
                   "Masuk ke Pajakin Aja!",
-                  style: TextStyle(color: Colors.white, fontSize: 22),
+                  style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
                 const SizedBox(height: 30),
-
                 TextField(
                   controller: emailC,
                   decoration: InputDecoration(
@@ -72,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 15),
-
                 TextField(
                   controller: passwordC,
                   obscureText: true,
@@ -84,8 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(12)),
                   ),
                 ),
-                const SizedBox(height: 20),
-
+                const SizedBox(height: 25),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -95,7 +89,6 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: login,
                   child: const Text("Login"),
                 ),
-
                 TextButton(
                   onPressed: () {
                     Navigator.push(
