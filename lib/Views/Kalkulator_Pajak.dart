@@ -1,10 +1,8 @@
-// File: lib/Views/Kalkulator_Pajak.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../Database/db_helper.dart';
-import '../Models/pajak_model.dart'; // Diperlukan untuk PajakModel
-import 'Admin_Edit_Regulasi_Page.dart'; // Diperlukan untuk navigasi
+import '../Models/pajak_model.dart';
+import 'Admin_Edit_Regulasi_Page.dart';
 
 class KalkulatorPajak extends StatefulWidget {
   const KalkulatorPajak({super.key});
@@ -231,7 +229,7 @@ class _KalkulatorPajakState extends State<KalkulatorPajak> {
               controller: _nilaiController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: "Masukkan nilai",
+                labelText: "Masukkan Penghasilan Pertahun",
                 border: const OutlineInputBorder(),
                 prefixIcon: Container(width: 45, alignment: Alignment.center, child: const Text("Rp", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black))),
               ),

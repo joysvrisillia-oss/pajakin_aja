@@ -1,12 +1,12 @@
 class TaxSetting {
   final int? id;
-  final String jenisPajak;     // contoh: "PPh Pribadi"
-  final double tarif1;         // untuk pajak progresif bisa diisi 0
-  final double tarif2;         // untuk pajak progresif bisa diisi 0
-  final double tarif3;         // untuk pajak progresif bisa diisi 0
-  final double tarifUMKM;      // khusus UMKM
-  final double tarifPPN;       // khusus jenis pajak lain
-  final double tarifPBB;       // khusus jenis pajak lain
+  final String jenisPajak;
+  final double tarif1;
+  final double tarif2;
+  final double tarif3;
+  final double tarifUMKM;
+  final double tarifPPN;
+  final double tarifPBB;
 
   TaxSetting({
     this.id,

@@ -3,7 +3,7 @@ import '../Services/Api_Holiday_Service.dart';
 import '../Models/Holiday_Model.dart';
 import 'package:intl/intl.dart';
 
-// --- WIDGET UTAMA (Stateful) ---
+
 class PengingatPembayaranPage extends StatefulWidget {
   const PengingatPembayaranPage({super.key});
 
@@ -12,30 +12,22 @@ class PengingatPembayaranPage extends StatefulWidget {
 }
 
 class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
-  // Future yang sekarang digunakan untuk mengambil data dan menyimpannya
-  Future<List<Holiday>>? _holidaysFuture;
+    Future<List<Holiday>>? _holidaysFuture;
 
-  // State untuk tanggal batas akhir
   DateTime _selectedDeadlineDate = DateTime(2025, 12, 31);
 
-  // State untuk menyimpan data Hari Libur setelah fetch berhasil
-  List<Holiday> _holidays = [];
+    List<Holiday> _holidays = [];
 
-  // State untuk menyimpan catatan dinamis
-  String _noteMessage = 'Memuat data hari libur...';
+   String _noteMessage = 'Memuat data hari libur...';
 
   @override
   void initState() {
     super.initState();
-    // Memanggil API dan memproses hasilnya
     _holidaysFuture = ApiHolidayService.getHolidays().then((data) {
-      // 1. Simpan data Hari Libur ke state
       _holidays = data;
-      // 2. Inisialisasi catatan awal
       _generateNote(_selectedDeadlineDate);
       return data;
     }).catchError((error) {
-      // Tangani error jika gagal
       _noteMessage = 'Gagal memuat hari libur: $error';
       return <Holiday>[];
     });
@@ -43,10 +35,7 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
 
 
   void _generateNote(DateTime deadline) {
-    // Format tanggal deadline ke format YYYY-MM-DD untuk pencarian di data API
     final deadlineString = DateFormat('yyyy-MM-dd').format(deadline);
-
-    // Cari apakah tanggal jatuh tempo adalah hari libur
     final isHoliday = _holidays.firstWhere(
           (h) => h.date == deadlineString,
       orElse: () => Holiday(date: '', name: ''),
@@ -54,8 +43,6 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
 
     String newNote;
     if (isHoliday.date.isNotEmpty) {
-      // Jika tanggal jatuh tempo adalah Hari Libur
-      // Asumsi: Mundur 1 hari kerja (logika ini harus diperbaiki untuk melewati weekend/libur berturut-turut)
       final nextDay = deadline.add(const Duration(days: 1));
       final nextDayFormatted = DateFormat('dd').format(nextDay);
       final holidayName = isHoliday.name;
@@ -71,18 +58,15 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
       newNote = 'Tanggal batas akhir pembayaran adalah *hari kerja*. Tidak ada sinkronisasi hari libur yang diterapkan.';
     }
 
-    // Perbarui state catatan
     setState(() {
       _noteMessage = newNote;
     });
   }
 
-  // Fungsi Callback yang diperbarui untuk memperbarui tanggal DAN catatan
   void _updateDeadlineDate(DateTime newDate) {
     setState(() {
       _selectedDeadlineDate = newDate;
     });
-    // Panggil fungsi untuk menghasilkan catatan baru
     _generateNote(newDate);
   }
 
@@ -114,7 +98,6 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- Bagian 1: Kartu Pengingat ---
               PaymentReminderCard(
                 deadlineDate: _selectedDeadlineDate,
                 onDateSelected: _updateDeadlineDate,
@@ -123,7 +106,6 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
 
               const SizedBox(height: 20),
 
-              // --- Bagian 2: Header Daftar Hari Libur ---
               const Text(
                 'Daftar Hari Libur Nasional Tahun Ini',
                 style: TextStyle(
@@ -134,7 +116,6 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
               ),
               const SizedBox(height: 12),
 
-              // FutureBuilder untuk Hari Libur
               FutureBuilder<List<Holiday>>(
                 future: _holidaysFuture,
                 builder: (context, snapshot) {
@@ -174,8 +155,6 @@ class _PengingatPembayaranPageState extends State<PengingatPembayaranPage> {
   }
 }
 
-// -------------------------------------------------------------------
-// --- 1. Kartu Hari Libur (Tidak Ada Perubahan) ---
 class HolidayCard extends StatelessWidget {
   final Holiday holiday;
 
@@ -227,8 +206,6 @@ class HolidayCard extends StatelessWidget {
   }
 }
 
-// -------------------------------------------------------------------
-// --- 2. Kartu Pengingat Pembayaran (Direvisi) ---
 class PaymentReminderCard extends StatelessWidget {
   final DateTime deadlineDate;
   final Function(DateTime) onDateSelected;
@@ -242,12 +219,11 @@ class PaymentReminderCard extends StatelessWidget {
     required this.noteMessage,
   });
 
-  // Helper untuk memformat DateTime menjadi String D-M-Y
+
   String _formatDate(DateTime date) {
     return DateFormat('dd-MM-yyyy').format(date);
   }
 
-  // Fungsi untuk menampilkan DatePicker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -264,7 +240,6 @@ class PaymentReminderCard extends StatelessWidget {
     }
   }
 
-  // 🆕 Fungsi untuk menampilkan dialog "Set Pengingat Berhasil"
   Future<void> _showSuccessDialog(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -309,7 +284,6 @@ class PaymentReminderCard extends StatelessWidget {
             ),
             const Divider(height: 25, thickness: 1.5, color: Colors.grey),
 
-            // Item Batas Akhir
             _buildReminderItem(
               context,
               'Batas Akhir Pelaporan & Pembayaran',
@@ -318,7 +292,6 @@ class PaymentReminderCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
 
-            // Tombol untuk Mengubah Tanggal
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(
@@ -329,20 +302,16 @@ class PaymentReminderCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // Catatan Sinkronisasi Hari Libur
             _buildReminderNote(noteMessage),
 
             const SizedBox(height: 18),
 
-            // 🆕 Tombol "SET PENGINGAT"
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton.icon(
-                // 🆕 Panggil dialog sukses saat tombol diklik
                 onPressed: () {
                   _showSuccessDialog(context);
                 },
-                // 🆕 Mengganti ikon dan label
                 icon: const Icon(Icons.notifications_active_outlined, size: 18),
                 label: const Text('SET PENGINGAT', style: TextStyle(fontWeight: FontWeight.bold)),
                 style: ElevatedButton.styleFrom(
@@ -359,11 +328,9 @@ class PaymentReminderCard extends StatelessWidget {
     );
   }
 
-  // Helper untuk baris detail batas akhir (memperbaiki RenderFlex overflow)
   Widget _buildReminderItem(BuildContext context, String title, String date, Color color) {
     return Row(
       children: [
-        // FIX: BUNGKUS DENGAN Expanded
         Expanded(
           child: Text(
             title,
@@ -384,7 +351,6 @@ class PaymentReminderCard extends StatelessWidget {
     );
   }
 
-  // Helper untuk box catatan
   Widget _buildReminderNote(String note) {
     return Container(
       padding: const EdgeInsets.all(12),
